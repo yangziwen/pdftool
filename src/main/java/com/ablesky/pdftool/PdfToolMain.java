@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.ablesky.pdftool.command.Command;
 import com.ablesky.pdftool.command.SplitCommand;
 import com.beust.jcommander.JCommander;
@@ -21,7 +23,15 @@ public class PdfToolMain {
 			commander.addCommand(command.getName(), command);
 		}
 		
+		if(ArrayUtils.isEmpty(args)) {
+			commander.usage();
+			return;
+		}
+		
 		try {
+			if(args.length == 1) {
+				args = ArrayUtils.add(args, "--help");
+			}
 			commander.parse(args);
 		} catch (ParameterException e) {
 			System.err.println(e.getMessage());
@@ -30,7 +40,7 @@ public class PdfToolMain {
 		
 		Command invokedCommand = commandMap.get(commander.getParsedCommand());
 		if(invokedCommand != null) {
-			invokedCommand.invoke();
+			invokedCommand.invoke(commander);
 		} else {
 			System.err.println("Invalid command!");
 		}
