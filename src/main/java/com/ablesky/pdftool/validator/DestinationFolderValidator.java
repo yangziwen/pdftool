@@ -10,7 +10,7 @@ public class DestinationFolderValidator implements IValueValidator<File> {
 	@Override
 	public void validate(String name, File destFolder) throws ParameterException {
 		if(destFolder != null && destFolder.exists() && !destFolder.isDirectory()) {
-			throw new ParameterException("desination path exists but is not a folder!");
+			throw new ParameterException("destination path exists but is not a folder!");
 		}
 	}
 

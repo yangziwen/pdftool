@@ -1,6 +1,8 @@
 package com.ablesky.pdftool.util;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Properties;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -9,6 +11,8 @@ import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfReader;
 
 public class PdfUtil {
+	
+	private static final Properties COMMAND_CONFIG = ConfigUtil.loadConfigInfo("command.properties");
 
 	private PdfUtil () {}
 	
@@ -82,5 +86,19 @@ public class PdfUtil {
 			}
 		}
 		return pageNum;
+	}
+	
+	public static boolean convertPdfToSwf(String sourceFilePath, String targetFilePath, boolean polyToBitmap) {
+		String cmd = COMMAND_CONFIG.getProperty("command.pdfToSwf");
+		if(polyToBitmap) {
+			cmd += " -s poly2bitmap ";
+		}
+		Process process = CmdUtil.exec(cmd, sourceFilePath, targetFilePath);
+		CmdUtil.waitFor(process);
+		return CmdUtil.isSuccess(process.exitValue());
+	}
+	
+	public static boolean convertPdfToSwf(File sourceFile, File targetFile, boolean polyToBitmap) {
+		return convertPdfToSwf(sourceFile.getAbsolutePath(), targetFile.getAbsolutePath(), polyToBitmap);
 	}
 }

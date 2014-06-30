@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.ablesky.pdftool.command.Command;
+import com.ablesky.pdftool.command.ConvertCommand;
 import com.ablesky.pdftool.command.SplitCommand;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -18,7 +19,7 @@ public class PdfToolMain {
 		Map<String, Command> commandMap = new HashMap<String, Command>();
 		JCommander commander = new JCommander();
 		
-		for(Command command: Arrays.asList(new SplitCommand())) {
+		for(Command command: Arrays.asList(new SplitCommand(), new ConvertCommand())) {
 			commandMap.put(command.getName(), command);
 			commander.addCommand(command.getName(), command);
 		}
