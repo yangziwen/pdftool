@@ -21,9 +21,7 @@ public class CmdUtil {
 	
 	public static final Callback<Object> NOOP = new Callback<Object>() {
 		@Override
-		protected Object process(String line, Map<String, Object> resultMap) {
-			return null;
-		}
+		protected void process(String line, Map<String, Object> resultMap) {}
 	};
 	
 	public static Process exec(String cmdPattern, Object... args) {
@@ -92,7 +90,7 @@ public class CmdUtil {
 	
 	public abstract static class Callback<T> {
 		
-		protected abstract T process(String line, Map<String, T> resultMap);
+		protected abstract void process(String line, Map<String, T> resultMap);
 		
 		protected void afterProcess(Map<String, T> resultMap) {/*---- defaultly do nothing ----*/}
 		

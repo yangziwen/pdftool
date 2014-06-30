@@ -2,10 +2,12 @@ package com.ablesky.pdftool.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.io.FilenameUtils;
 
+import com.ablesky.pdftool.util.CmdUtil.Callback;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfReader;
@@ -94,7 +96,12 @@ public class PdfUtil {
 			cmd += " -s poly2bitmap ";
 		}
 		Process process = CmdUtil.exec(cmd, sourceFilePath, targetFilePath);
-		CmdUtil.waitFor(process);
+		CmdUtil.consume(process, new Callback<String>() {
+			@Override
+			protected void process(String line, Map<String, String> resultMap) {
+				System.out.println(line);
+			}
+		});
 		return CmdUtil.isSuccess(process.exitValue());
 	}
 	
